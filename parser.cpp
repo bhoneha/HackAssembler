@@ -37,7 +37,7 @@ void Parser::advance()
 	}
 }
 
-// return A_INST or C_INST or NONE
+// return A_INST or C_INST or NONE or COMMENT
 inst_type Parser::instructionType()
 {
 	if (!Parser::curr_inst.empty()) {
@@ -46,6 +46,27 @@ inst_type Parser::instructionType()
 		return inst_type::C_INST;
 	}
 	return inst_type::NONE;
+}
+
+std::string Parser::dest()
+{
+	int index_of_equal = Parser::curr_inst.find('=');
+	// one character before '='
+	return index_of_equal == std::string::npos ? std::string{} : Parser::curr_inst.substr(index_of_equal - 1, 1);
+}
+
+std::string Parser::comp()
+{
+	int index_of_equal = Parser::curr_inst.find('=');
+	// one character after '='
+	return index_of_equal == std::string::npos ? std::string{} : Parser::curr_inst.substr(index_of_equal + 1, 1);
+}
+
+std::string Parser::jump()
+{
+	int index_of_semicolon = Parser::curr_inst.find(';');
+	// 3 characters after ';'
+	return index_of_semicolon == std::string::npos ? std::string{} : Parser::curr_inst.substr(index_of_semicolon + 1, 3);
 }
 
 std::string Parser::symbol()

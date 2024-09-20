@@ -9,16 +9,15 @@ class Parser {
 private:
 	std::ifstream file;
 public:
-	// current instruction
-	std::string curr_inst;
-	// open the filestream
-	Parser(std::string filename);
-
-	// check if end of file has reached
-	bool hasMoreLines();
-	// set curr_inst to next instruction
-	void advance();
-
+	std::string curr_inst; // current instruction
+	Parser(std::string filename); // open the filestream
+	bool hasMoreLines(); // check if end of file has reached
+	void advance(); // set curr_inst to next instruction
 	inst_type instructionType();
+	// C-instruction format : dest=comp;jmp
+	std::string dest();
+	std::string comp();
+	std::string jump();
+
 	std::string symbol();
 };
