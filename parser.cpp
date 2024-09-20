@@ -22,9 +22,18 @@ bool Parser::hasMoreLines()
 // if the next is not A_INST nor C_INST, get the next instruction again
 void Parser::advance()
 {
-	bool valid_inst = true;
-	while (std::getline(Parser::file, Parser::curr_inst) && !valid_inst) {
-		if (Parser::instructionType() == inst_type::NONE) valid_inst = false;
+	bool valid_inst = false;
+	while (!valid_inst && std::getline(Parser::file, Parser::curr_inst)) {
+		// remove whitespaces
+		for (size_t i = 0; i < Parser::curr_inst.size(); i++) {
+			if (Parser::curr_inst[i] == ' ') {
+				Parser::curr_inst.erase(i, 1);
+				// adjusting index for new string content
+				i--;
+			}
+		}
+
+		if (Parser::instructionType() != inst_type::NONE && Parser::instructionType() != inst_type::COMMENT) valid_inst = true;
 	}
 }
 
@@ -32,6 +41,7 @@ void Parser::advance()
 inst_type Parser::instructionType()
 {
 	if (!Parser::curr_inst.empty()) {
+		if (Parser::curr_inst.substr(0, 2) == "//") return inst_type::COMMENT;
 		if (Parser::curr_inst[0] == '@') return inst_type::A_INST;
 		return inst_type::C_INST;
 	}
