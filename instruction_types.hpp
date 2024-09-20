@@ -3,5 +3,6 @@
 enum class inst_type {
 	A_INST,
 	C_INST,
+	COMMENT,
 	NONE
 };
