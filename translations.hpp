@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <bitset>
 
 struct translations {
 	std::map <std::string, std::string> dest{
@@ -59,4 +60,17 @@ struct translations {
 		{"D&M", "1000000"},
 		{"D|M", "1010101"},
 	};
+
+	std::string dec_to_bin(std::string decimal)
+	{
+		unsigned int dec = unsigned int(std::stoi(decimal));
+		std::bitset<15> bs{ dec };
+
+		return bs.to_string();
+	}
+
+	std::string dec_to_bin(unsigned int decimal) {
+		std::bitset<15> bs{ decimal };
+		return bs.to_string();
+	}
 };
