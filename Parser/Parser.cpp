@@ -42,7 +42,8 @@ inst_type Parser::instructionType()
 {
 	if (!Parser::curr_inst.empty()) {
 		if (Parser::curr_inst.substr(0, 2) == "//") return inst_type::COMMENT;
-		if (Parser::curr_inst[0] == '@') return inst_type::A_INST;
+		else if (Parser::curr_inst.find('(') != Parser::curr_inst.npos) return inst_type::LABEL;
+		else if (Parser::curr_inst[0] == '@') return inst_type::A_INST;
 		return inst_type::C_INST;
 	}
 	return inst_type::NONE;
@@ -77,5 +78,12 @@ std::string Parser::symbol()
 		int index_of_at = Parser::curr_inst.find('@');
 		return Parser::curr_inst.substr(index_of_at + 1, -1);
 	}
+	else if (Parser::instructionType() == inst_type::LABEL) {
+		int index_start = Parser::curr_inst.find("(") + 1;
+		int size = Parser::curr_inst.find(")") - index_start;
+
+		return Parser::curr_inst.substr(index_start, size);
+	}
 	return std::string{};
 }
+

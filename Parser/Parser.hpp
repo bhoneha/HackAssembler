@@ -20,4 +20,5 @@ public:
 	std::string jump();
 
 	std::string symbol();
+
 };
