@@ -32,11 +32,3 @@ std::string Code::jump(std::string jump)
 	return Code::pairs.jump[""];
 }
 
-std::string Code::A_const(std::string decimal)
-{
-	unsigned int dec = std::stoi(decimal);
-	std::bitset<15> bs{ dec };
-
-	return bs.to_string();
-}
-
