@@ -1,4 +1,4 @@
-#include "parser.hpp"
+#include "Parser.hpp"
 
 Parser::Parser(std::string filename)
 {
@@ -25,7 +25,7 @@ void Parser::advance()
 	bool valid_inst = false;
 	while (!valid_inst && std::getline(Parser::file, Parser::curr_inst)) {
 		// remove whitespaces
-		for (size_t i = 0; i < Parser::curr_inst.size(); i++) {
+		for (size_t i{}; i < Parser::curr_inst.size(); i++) {
 			if (Parser::curr_inst[i] == ' ') {
 				Parser::curr_inst.erase(i, 1);
 				// adjusting index for new string content
@@ -52,14 +52,16 @@ std::string Parser::dest()
 {
 	int index_of_equal = Parser::curr_inst.find('=');
 	// one character before '='
-	return index_of_equal == std::string::npos ? std::string{} : Parser::curr_inst.substr(index_of_equal - 1, 1);
+	return index_of_equal == std::string::npos ? std::string{} : Parser::curr_inst.substr(0, index_of_equal);
 }
 
 std::string Parser::comp()
 {
 	int index_of_equal = Parser::curr_inst.find('=');
-	// one character after '='
-	return index_of_equal == std::string::npos ? std::string{} : Parser::curr_inst.substr(index_of_equal + 1, 1);
+	int index_of_semicolon = Parser::curr_inst.find(';');
+	if (index_of_semicolon == std::string::npos)
+		return Parser::curr_inst.substr(index_of_equal + 1, -1);
+	return Parser::curr_inst.substr(index_of_equal + 1, index_of_semicolon - (index_of_equal + 1));
 }
 
 std::string Parser::jump()
@@ -71,5 +73,9 @@ std::string Parser::jump()
 
 std::string Parser::symbol()
 {
-	return std::string();
+	if (Parser::instructionType() == inst_type::A_INST) {
+		int index_of_at = Parser::curr_inst.find('@');
+		return Parser::curr_inst.substr(index_of_at + 1, -1);
+	}
+	return std::string{};
 }
