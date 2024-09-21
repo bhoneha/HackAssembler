@@ -1,6 +1,6 @@
 #pragma once
 
-#include "instruction_types.hpp"
+#include "../instruction_types.hpp"
 #include <fstream>
 #include <string>
 #include <iostream>
